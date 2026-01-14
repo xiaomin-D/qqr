@@ -1,13 +1,19 @@
 # qqr
 
-<h4 align="left">
+<h4 align="center">
     <p>
         <b>English</b> |
         <a href="README_zh.md">中文</a>
     </p>
 </h4>
 
-🤗 [HuggingFace](https://huggingface.co/collections/Alibaba-NLP/arenarl) | 🤖 [ModelScope](https://modelscope.cn/datasets/iic/Open-Travel) | 📰 [Blog](https://tongyi-agent.github.io/blog/arenarl/) | 📰 [Paper](https://huggingface.co/papers/2601.06487)
+<p align="center">
+    <img src="assets/Logo.png" width="540"/>
+<p>
+
+<p align="center">
+    🤗 <a href="https://huggingface.co/collections/Alibaba-NLP/arenarl">HuggingFace</a>&nbsp&nbsp | &nbsp&nbsp🤖 <a href="https://modelscope.cn/datasets/iic/Open-Travel">ModelScope</a>&nbsp&nbsp | &nbsp&nbsp📰 <a href="https://tongyi-agent.github.io/blog/arenarl/">Blog</a>&nbsp&nbsp | &nbsp&nbsp📑 <a href="https://huggingface.co/papers/2601.06487">Paper</a>
+<p>
 
 `qqr` (a.k.a. hilichurl) is a lightweight, non-intrusive extension for [`slime`](https://github.com/THUDM/slime). It seamlessly integrates the [Model Context Protocol (MCP)](https://github.com/modelcontextprotocol) standard to enable the evolution of open-ended agents via [**ArenaRL**](https://arxiv.org/abs/2601.06487).
 
