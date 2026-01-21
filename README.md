@@ -25,7 +25,7 @@
 - **ArenaRL Algorithm**: Full implementation of the core algorithms described in the paper. It includes built-in topologies for Anchor-Based, Round-Robin, Swiss-System, Double-Elimination, and Seeded Single-Elimination tournaments.
 - **Built for Open-Ended Agents**: Specifically engineered to tackle discriminative collapse in complex, open-ended tasks, ensuring continuous policy improvement via relative ranking even when reward model scores stagnate.
 - **MCP Support**: Seamlessly integration with the [MCP]((https://github.com/modelcontextprotocol)) standardizes the decoupling of LLM inference and tool environments. Developers can reuse existing MCP Servers as training environments without rewriting interfaces.
-- **High-Performance Training**: Built on top of [`slime`](https://github.com/THUDM/slime) (tested with `v0.2.1`) to deliver high-throughput, distributed rollout generation and training for large-scale agent evolution.
+- **High-Performance Training**: Built on top of [`slime`](https://github.com/THUDM/slime) to deliver high-throughput, distributed rollout generation and training for large-scale agent evolution.
 
 ## 📦 Installation
 
@@ -46,6 +46,15 @@ bash scripts/travel/run-qwen3-8B.sh
 ```
 
 You can configure the experiment in [`qqr/examples/travel/config.py`](qqr/examples/travel/config.py).
+
+## 📋 Compatibility
+
+Due to `slime` version upgrades, specifically regarding rollout changes, please use the following version combinations that we have tested to ensure stability:
+
+| qqr    | slime  |
+| :----- | :----- |
+| v0.1.1 | v0.2.2 |
+| v0.1.0 | v0.2.1 |
 
 ## Acknowledgements
 

@@ -28,7 +28,7 @@
 
 - **MCP 支持**: 集成 MCP 以标准化本地或远程工具的连接，实现了 LLM 推理与工具环境的解耦。开发者可以直接复用现有的 MCP Servers 作为训练环境，无需重写接口。
 
-- **高性能训练**: 底层基于 [`slime`](https://github.com/THUDM/`)（已在 `v0.2.1` 上测试）构建，支持大规模智能体进化所需的高吞吐量分布式生成与训练能力。
+- **高性能训练**: 底层基于 [`slime`](https://github.com/THUDM/`) 构建，支持大规模智能体进化所需的高吞吐量分布式生成与训练能力。
 
 ## 📦 安装
 
@@ -49,6 +49,15 @@ bash scripts/travel/run-qwen3-8B.sh
 ```
 
 您可以在 [`qqr/examples/travel/config.py`](qqr/examples/travel/config.py) 中进行实验相关配置。
+
+## 📋 兼容性
+
+由于 `slime` 的版本升级，特别是涉及 rollout 的改动，为了确保功能稳定，请使用以下经过测试的版本组合：
+
+| qqr    | slime  |
+| :----- | :----- |
+| v0.1.1 | v0.2.2 |
+| v0.1.0 | v0.2.1 |
 
 ## 致谢
 
