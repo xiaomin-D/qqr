@@ -1,9 +1,11 @@
 import asyncio
 import json
 import logging
+import os
 
 from mcp.server.fastmcp import FastMCP
 from openai import AsyncOpenAI
+import httpx
 
 from qqr.utils.envs import DASHSCOPE_API_KEY, DASHSCOPE_BASE_URL
 
@@ -16,6 +18,26 @@ model = "qwen-plus"
 client = AsyncOpenAI(
     api_key=DASHSCOPE_API_KEY, base_url=DASHSCOPE_BASE_URL, timeout=60, max_retries=10
 )
+
+# Reminders bridge (REST -> MCP tool)
+QQR_REMINDERS_BASE_URL = os.getenv("QQR_REMINDERS_BASE_URL", "http://3.151.215.26:8007")
+
+
+@mcp.tool()
+async def list_reminders(user_id: str) -> str:
+    """
+    调用远端 reminders 服务，列出指定用户的 reminders。
+
+    Args:
+        user_id: 用户 ID，例如 "user_2"
+    """
+    url = f"{QQR_REMINDERS_BASE_URL.rstrip('/')}/mcp/tools/list_reminders"
+    payload = {"user_id": user_id}
+
+    async with httpx.AsyncClient(timeout=20) as client:
+        resp = await client.post(url, json=payload, headers={"Content-Type": "application/json"})
+        resp.raise_for_status()
+        return resp.text
 
 
 @mcp.tool()

@@ -14,7 +14,54 @@ import pybase64
 import sglang_router
 from packaging.version import parse
 from slime.rollout.base_types import RolloutFnEvalOutput, RolloutFnTrainOutput
-from slime.rollout.filter_hub.base_types import MetricGatherer, call_dynamic_filter
+from types import SimpleNamespace
+
+# Slime API compatibility:
+# - Some slime versions don't export MetricGatherer (or even call_dynamic_filter) from
+#   slime.rollout.filter_hub.base_types. We keep qqr compatible by importing the module
+#   and falling back to a minimal local implementation.
+try:
+    from slime.rollout.filter_hub import base_types as _slime_filter_base_types  # type: ignore
+
+    call_dynamic_filter = getattr(_slime_filter_base_types, "call_dynamic_filter", None)
+    MetricGatherer = getattr(_slime_filter_base_types, "MetricGatherer", None)
+except Exception:  # pragma: no cover
+    call_dynamic_filter = None
+    MetricGatherer = None
+
+
+def _fallback_call_dynamic_filter(dynamic_filter, args, group):
+    if dynamic_filter is None:
+        return SimpleNamespace(keep=True, reason=None)
+    out = dynamic_filter(args, group)
+    # Accept either a bool or an object with keep/reason
+    if isinstance(out, bool):
+        return SimpleNamespace(keep=out, reason=None)
+    if hasattr(out, "keep"):
+        return out
+    return SimpleNamespace(keep=True, reason=None)
+
+
+if call_dynamic_filter is None:
+    call_dynamic_filter = _fallback_call_dynamic_filter
+
+
+if MetricGatherer is None:
+    class MetricGatherer:  # type: ignore
+        def __init__(self):
+            self._drops = 0
+            self._drop_reasons = {}
+
+        def on_dynamic_filter_drop(self, reason=None):
+            self._drops += 1
+            key = str(reason) if reason is not None else "unknown"
+            self._drop_reasons[key] = self._drop_reasons.get(key, 0) + 1
+
+        def collect(self):
+            return {
+                "dynamic_filter_drops": self._drops,
+                "dynamic_filter_drop_reasons": self._drop_reasons,
+            }
 from slime.rollout.rm_hub import async_rm, batched_async_rm
 from slime.utils.async_utils import run
 from slime.utils.data import Dataset

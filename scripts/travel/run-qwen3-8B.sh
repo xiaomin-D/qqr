@@ -17,7 +17,8 @@ set -ex
 RUN_NAME=Qwen3-8B-ArenaRL
 CKPT_DIR=${RUN_NAME}
 
-QQR_PATH=$(pip list | grep qqr | awk '{print $NF}')
+QQR_PATH=/root/qqr
+
 SLIME_PATH=$(pip list | grep slime | awk '{print $NF}')
 MEGATRON_LM_PATH=$(pip list | grep megatron-core | awk '{print $NF}')
 
@@ -33,7 +34,6 @@ fi
 
 
 cd ${SLIME_PATH}
-
 export MASTER_ADDR=${MASTER_ADDR:-127.0.0.1}
 export MASTER_PORT=${MASTER_PORT:-23456}
 export WORLD_SIZE=${WORLD_SIZE:-1}
@@ -77,7 +77,7 @@ source "${SLIME_PATH}/scripts/models/qwen3-8B.sh"
 
 CKPT_ARGS=(
    --hf-checkpoint qwen/Qwen3-8B
-   --ref-load /path/to/Qwen3-8B_torch_dist
+   --ref-load /root/Qwen3-8B_torch_dist
    --load ${CKPT_DIR}
    --save ${CKPT_DIR}
    --save-interval 10
